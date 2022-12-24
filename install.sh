@@ -1,6 +1,6 @@
 #!/bin/bash
 ############################
-# Updated: 28 November 2022
+# Updated: 18 December 2022
 ############################
 
 ######## Variables and Arrays ######## 
@@ -31,8 +31,8 @@ echo " "
 echo -e "${green_bold}===> ${cyan_bold}Installing Lady's Arch Linux build ${green_bold}<=== ${reset}"
 echo " "
 
+
 echo -e "${green_bold}===> ${cyan_bold}Installing Paru...${reset}"
-# Paru setup
 mkdir -p .config
 cd $HOME/.config
 sudo pacman -S --needed base-devel    
@@ -41,14 +41,18 @@ cd paru
 makepkg -si
 cd $HOME
 
-# Package install
+
 echo -e "${green_bold}===> ${cyan_bold}Installing packages from core, extra, and community...${reset}" 
 sudo pacman -S "${pacman[@]}" 
+
+
 echo -e "${green_bold}===> ${cyan_bold}Installing packages from AUR...${reset}" 
 paru -S "${paru[@]}"
 
+
 echo -e "${green_bold}===> ${cyan_bold}Pulling dotfiles from Github...${reset}"
 git clone https://github.com/ladybouy/.dotfiles.git
+
 
 echo -e "${green_bold}===> ${cyan_bold}Making symbolic links from dotfiles folder...${reset}"
 rm .bashrc .Xresouces .xprofile .xinitrc
@@ -63,7 +67,7 @@ sudo cp $HOME/.scripts/shell/system/hotplug_monitor.sh    /usr/local/bin/
 sudo cp $HOME/.scripts/shell/notes                        /usr/bin/
 sudo cp $HOME/.scripts/shell/mpdstatus                    /usr/bin/
 sudo cp $HOME/.scripts/shell/system/udev/rules.d/         /etc/udev/
-sudo cp $HOME/.scripts/shell/system/rofi-power-menu/      /usr/bin/ 
+sudo cp $HOME/.scripts/shell/system/rofi-power-menu/      /usr/bin/
 # TODO  lightdm settings
 
 echo -e "${green_bold}==> ${cyan_bold}Compiling Suckless software...${reset}"
@@ -83,6 +87,9 @@ sudo mv xmenu.sh /usr/local/bin
 
 cd $HOME
 
+echo -e "${green_bold}==> ${cyan_bold}Changing shell to zsh...${reset}"
+sudo chsh -s /usr/bin/zsh
+
 echo -e "${green_bold}==> ${cyan_bold}Enabling systemd services...${reset}"
 sudo cp $HOME/.scripts/shell/system/systemd/system/* /etc/systemd/system
 sudo systemctl enable plymouth.service && systemctl --user start plymouth.service
@@ -93,5 +100,23 @@ sudo systemctl enable lightdm && systemctl --user start lightdm.service
 sudo systemctl enable audio-setup.service && systemctl --user start audio-setup.service
 sudo systemctl enable lock.service && systemctl --user start lock.service
 sudo systemctl --user enable mpd.service && systemctl --user start mpd.service
+sudo systemctl enable rtirq
 mpd
 mpc update
+
+
+echo -e "${green_bold}==> ${cyan_bold}Setting up audio production settings...${reset}"
+sudo groups add audio
+sudo groups add realtime
+sudo usermod -a -G audio $USER
+sudo usermod -a -G realtime $USER
+
+sudo echo "@realtime -rtprio 99" >> /etc/security/limits.d/99-realtime-privileges.conf
+sudo echo "@realtime - memlock unlimited" >> /etc/security/limits.d/99-realtime-privileges.conf
+sudo echo "@realtime - nice -11" >> /etc/security/limits.d/99-realtime-privileges.conf
+
+sudo echo "@audio - rtprio 99" > /etc/security/limits.d/audio.conf
+sudo echo "@audio - memlock unlimited" >> /etc/security/limits.d/audio.conf
+
+echo "vm.swappiness = 10" > /etc/sysctl.d/90-swappiness.conf
+echo "fs.inotify.max_user_watches = 600000" > /etc/sysctl.d/90-max_user_watches.conf
