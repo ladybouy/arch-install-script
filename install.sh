@@ -60,14 +60,17 @@ cd .dotfiles
 stow */
 
 echo -e "${green_bold}==> ${cyan_bold}Installing system scripts ...${reset}"
-sudo cp $HOME/.scripts/shell/system/volume.sh             /usr/bin/
-sudo cp $HOME/.scripts/shell/system/audio-setup           /usr/bin/
-sudo cp $HOME/.scripts/shell/system/internet              /usr/bin/
-sudo cp $HOME/.scripts/shell/system/hotplug_monitor.sh    /usr/local/bin/
-sudo cp $HOME/.scripts/shell/notes                        /usr/bin/
-sudo cp $HOME/.scripts/shell/mpdstatus                    /usr/bin/
-sudo cp $HOME/.scripts/shell/system/udev/rules.d/         /etc/udev/
-sudo cp $HOME/.scripts/shell/system/rofi-power-menu/      /usr/bin/
+sudo cp $HOME/.scripts/shell/system/volume.sh                     /usr/bin/
+sudo cp $HOME/.scripts/shell/system/audio-setup                   /usr/bin/
+sudo cp $HOME/.scripts/shell/system/internet                      /usr/bin/
+sudo cp $HOME/.scripts/shell/system/hotplug_monitor.sh            /usr/local/bin/
+sudo cp $HOME/.scripts/shell/notes                                /usr/bin/
+sudo cp $HOME/.scripts/shell/mpdstatus                            /usr/bin/
+sudo cp $HOME/.scripts/shell/system/udev/rules.d/                 /etc/udev/
+sudo cp $HOME/.scripts/shell/system/rofi-power-menu/              /usr/bin/
+sudo cp $HOME/.scripts/shell/system/lightdm.conf                  /etc/lightdm/ 
+sudo cp $HOME/.scripts/shell/system/lightdm-gtk-greeter.conf      /etc/lightdm/ 
+
 # TODO  lightdm settings
 
 echo -e "${green_bold}==> ${cyan_bold}Compiling Suckless software...${reset}"

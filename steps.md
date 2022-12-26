@@ -34,13 +34,16 @@ locale-gen
 
 Create the `locale.conf` and set the LANG variable accordingly:
 ```bash
-LANG=en_US.UTF-8
+echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 ```
 
 Create the hostname file: /etc/hostname
 ```bash
 myhostname
 ```
+
+edit /etc/mkinitcpio.conf: add `encrypt` hook before `filesystem`
+
 
 Create a new initramfs:
 ```bash
