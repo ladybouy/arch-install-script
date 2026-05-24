@@ -68,8 +68,6 @@ sudo cp $HOME/.scripts/shell/notes                                /usr/bin/
 sudo cp $HOME/.scripts/shell/mpdstatus                            /usr/bin/
 sudo cp $HOME/.scripts/shell/system/udev/rules.d/                 /etc/udev/
 sudo cp $HOME/.scripts/shell/system/rofi-power-menu/              /usr/bin/
-sudo cp $HOME/.scripts/shell/system/lightdm.conf                  /etc/lightdm/ 
-sudo cp $HOME/.scripts/shell/system/lightdm-gtk-greeter.conf      /etc/lightdm/ 
 
 # TODO  lightdm settings
 
@@ -103,7 +101,11 @@ sudo systemctl enable lightdm && systemctl --user start lightdm.service
 sudo systemctl enable audio-setup.service && systemctl --user start audio-setup.service
 sudo systemctl enable lock.service && systemctl --user start lock.service
 sudo systemctl --user enable mpd.service && systemctl --user start mpd.service
+sudo systemctl enable pipewire.service && systemctl --user pipewire.service
+sudo systemctl enable pipewire-pulse.service && systemctl --user pipewire-pulse.service
+sudo systemctl enable wireplumber.service && systemctl --user wireplumber.service
 sudo systemctl enable rtirq
+
 mpd
 mpc update
 
