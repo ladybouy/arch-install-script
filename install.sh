@@ -100,10 +100,11 @@ sudo systemctl enable cups && systemctl --user start cups.service
 sudo systemctl enable lightdm && systemctl --user start lightdm.service
 sudo systemctl enable audio-setup.service && systemctl --user start audio-setup.service
 sudo systemctl enable lock.service && systemctl --user start lock.service
-sudo systemctl --user enable mpd.service && systemctl --user start mpd.service
-sudo systemctl enable pipewire.service && systemctl --user pipewire.service
-sudo systemctl enable pipewire-pulse.service && systemctl --user pipewire-pulse.service
-sudo systemctl enable wireplumber.service && systemctl --user wireplumber.service
+sudo systemctl enable mpd.service && systemctl --user start mpd.service
+sudo systemctl enable pipewire.service && systemctl --user start pipewire.service
+sudo systemctl enable pipewire-pulse.service && systemctl --user start pipewire-pulse.service
+sudo systemctl enable wireplumber.service && systemctl --user start wireplumber.service
+sudo systemctl enable sddm.service && systemctl --user start sddm.service
 sudo systemctl enable rtirq
 
 mpd
