@@ -43,12 +43,13 @@ cd $HOME
 
 
 echo -e "${green_bold}===> ${cyan_bold}Installing packages from core, extra, and community...${reset}" 
-sudo pacman -S --needed - < pacman.lst
+sudo pacman -S  --noconfirm ${pacman[@]}
 
 
 echo -e "${green_bold}===> ${cyan_bold}Installing packages from AUR...${reset}" 
-paru -S --needed - < aur.lst
-
+echo -e "${green_bold}===> ${cyan_bold}Installing packages from AUR...${reset}" 
+paru -S --needed   ${pacman[@]}
+paru -S --needed   ${paru[@]}
 
 echo -e "${green_bold}===> ${cyan_bold}Pulling dotfiles from Github...${reset}"
 git clone https://github.com/ladybouy/.dotfiles.git
@@ -93,39 +94,36 @@ sudo chsh -s /usr/bin/zsh
 
 echo -e "${green_bold}==> ${cyan_bold}Enabling systemd services...${reset}"
 sudo cp $HOME/.scripts/shell/system/systemd/system/* /etc/systemd/system
-sudo systemctl enable plymouth.service && systemctl --user start plymouth.service
-sudo systemctl enable NetworkManager && systemctl --user start NetworkManager.service
-sudo systemctl enable bluetooth && systemctl --user start bluetooth.service
-sudo systemctl enable cups && systemctl --user start cups.service
-sudo systemctl enable lightdm && systemctl --user start lightdm.service
-sudo systemctl enable audio-setup.service && systemctl --user start audio-setup.service
-sudo systemctl enable lock.service && systemctl --user start lock.service
-sudo systemctl enable mpd.service && systemctl --user start mpd.service
-sudo systemctl enable pipewire.service && systemctl --user start pipewire.service
-sudo systemctl enable pipewire-pulse.service && systemctl --user start pipewire-pulse.service
-sudo systemctl enable wireplumber.service && systemctl --user start wireplumber.service
-sudo systemctl enable sddm.service && systemctl --user start sddm.service
-sudo systemctl enable rtirq
+sudo systemctl enable --now NetworkManager
+sudo systemctl enable --now bluetooth
+sudo systemctl enable --now cups
+systemctl enable audio-setup.service
+systemctl --user  enable mpd && systemctl --user start mpd.service
+systemctl --user --now enable pipewire
+systemctl --user --now enable pipewire-pulse
+systemctl --user --now enable wireplumbe
+sudo systemctl enable sddm
+sudo systemctl enable --now rtirq
 
 mpd
 mpc update
 
 
 echo -e "${green_bold}==> ${cyan_bold}Setting up audio production settings...${reset}"
-sudo groups add audio
-sudo groups add realtime
-sudo usermod -a -G audio $USER
-sudo usermod -a -G realtime $USER
+sudo groupadd audio
+sudo groupadd realtime 
+sudo usermod -aG audio $USER
+sudo usermod -aG realtime $USER
 
-sudo echo "@realtime -rtprio 99" >> /etc/security/limits.d/99-realtime-privileges.conf
-sudo echo "@realtime - memlock unlimited" >> /etc/security/limits.d/99-realtime-privileges.conf
-sudo echo "@realtime - nice -11" >> /etc/security/limits.d/99-realtime-privileges.conf
+echo "@realtime -rtprio 99" | sudo tee -a /etc/security/limits.d/99-realtime-privileges.conf
+echo "@realtime - memlock unlimited" | sudo tee -a  /etc/security/limits.d/99-realtime-privileges.conf
+echo "@realtime - nice -11" | sudo tee -a /etc/security/limits.d/99-realtime-privileges.conf
 
-sudo echo "@audio - rtprio 99" > /etc/security/limits.d/audio.conf
-sudo echo "@audio - memlock unlimited" >> /etc/security/limits.d/audio.conf
+echo "@audio - rtprio 99" | sudo tee etc/security/limits.d/audio.conf
+echo "@udio - memlock unlimited" | sudo tee /etc/security/limits.d/audio.conf
 
-sudo echo "vm.swappiness = 10" > /etc/sysctl.d/90-swappiness.conf
-sudo echo "fs.inotify.max_user_watches = 600000" > /etc/sysctl.d/90-max_user_watches.conf
+echo "vm.swappiness = 10" | sudo tee /etc/sysctl.d/90-swappiness.conf
+echo "fs.inotify.max_user_watches = 600000" | sudo tee /etc/sysctl.d/90-max_user_watches.conf
 
-sudo echo 2048 > /sys/class/rtc/rtc0/max_user_freq
-sudo echo 2048 > /proc/sys/dev/hpet/max-user-freq
+echo 2048 | sudo tee /sys/class/rtc/rtc0/max_user_freq
+echo 2048 | sudo tee /proc/sys/dev/hpet/max-user-freq
