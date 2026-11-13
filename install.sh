@@ -124,5 +124,8 @@ sudo echo "@realtime - nice -11" >> /etc/security/limits.d/99-realtime-privilege
 sudo echo "@audio - rtprio 99" > /etc/security/limits.d/audio.conf
 sudo echo "@audio - memlock unlimited" >> /etc/security/limits.d/audio.conf
 
-echo "vm.swappiness = 10" > /etc/sysctl.d/90-swappiness.conf
-echo "fs.inotify.max_user_watches = 600000" > /etc/sysctl.d/90-max_user_watches.conf
+sudo echo "vm.swappiness = 10" > /etc/sysctl.d/90-swappiness.conf
+sudo echo "fs.inotify.max_user_watches = 600000" > /etc/sysctl.d/90-max_user_watches.conf
+
+sudo echo 2048 > /sys/class/rtc/rtc0/max_user_freq
+sudo echo 2048 > /proc/sys/dev/hpet/max-user-freq
