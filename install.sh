@@ -43,11 +43,11 @@ cd $HOME
 
 
 echo -e "${green_bold}===> ${cyan_bold}Installing packages from core, extra, and community...${reset}" 
-sudo pacman -S "${pacman[@]}" 
+sudo pacman -S --needed - < pacman.lst
 
 
 echo -e "${green_bold}===> ${cyan_bold}Installing packages from AUR...${reset}" 
-paru -S "${paru[@]}"
+paru -S --needed - < aur.lst
 
 
 echo -e "${green_bold}===> ${cyan_bold}Pulling dotfiles from Github...${reset}"
