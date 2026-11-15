@@ -104,17 +104,17 @@ systemctl --user --now enable mpd
 systemctl --user --now enable pipewire
 systemctl --user --now enable pipewire-pulse
 systemctl --user --now enable wireplumber
-
+systemctl --user --now enable hyprpolkitagent
 
 mpd
 mpc update
-
 
 echo -e "${green_bold}==> ${cyan_bold}Setting up audio production settings...${reset}"
 sudo groupadd audio
 sudo groupadd realtime 
 sudo usermod -aG audio $USER
 sudo usermod -aG realtime $USER
+sudo usermod -aG lp $USER
 
 echo "@realtime -rtprio 99" | sudo tee -a /etc/security/limits.d/99-realtime-privileges.conf
 echo "@realtime - memlock unlimited" | sudo tee -a  /etc/security/limits.d/99-realtime-privileges.conf
