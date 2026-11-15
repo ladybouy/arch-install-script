@@ -1,6 +1,6 @@
 #!/bin/bash
 ############################
-# Updated: 18 December 2022
+# Updated: 14 December 2026
 ############################
 
 ######## Variables and Arrays ######## 
@@ -43,13 +43,11 @@ cd $HOME
 
 
 echo -e "${green_bold}===> ${cyan_bold}Installing packages from core, extra, and community...${reset}" 
-sudo pacman -S  --noconfirm ${pacman[@]}
+sudo pacman -S --needed --noconfirm ${pacman[@]}
 
 
 echo -e "${green_bold}===> ${cyan_bold}Installing packages from AUR...${reset}" 
-echo -e "${green_bold}===> ${cyan_bold}Installing packages from AUR...${reset}" 
-paru -S --needed   ${pacman[@]}
-paru -S --needed   ${paru[@]}
+paru -S --needed  ${paru[@]}
 
 echo -e "${green_bold}===> ${cyan_bold}Pulling dotfiles from Github...${reset}"
 git clone https://github.com/ladybouy/.dotfiles.git
@@ -69,6 +67,7 @@ sudo cp $HOME/.scripts/shell/notes                                /usr/bin/
 sudo cp $HOME/.scripts/shell/mpdstatus                            /usr/bin/
 sudo cp $HOME/.scripts/shell/system/udev/rules.d/                 /etc/udev/
 sudo cp $HOME/.scripts/shell/system/rofi-power-menu/              /usr/bin/
+sudo cp $HOME/.scripts/shell/bin/                                 /usr/bin/
 
 # TODO  lightdm settings
 
@@ -97,13 +96,15 @@ sudo cp $HOME/.scripts/shell/system/systemd/system/* /etc/systemd/system
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable --now bluetooth
 sudo systemctl enable --now cups
-systemctl enable audio-setup.service
-systemctl --user  enable mpd && systemctl --user start mpd.service
-systemctl --user --now enable pipewire
-systemctl --user --now enable pipewire-pulse
-systemctl --user --now enable wireplumbe
 sudo systemctl enable sddm
 sudo systemctl enable --now rtirq
+sudo systemctl enable --now sshd
+systemctl enable audio-setup.service
+systemctl --user --now enable mpd
+systemctl --user --now enable pipewire
+systemctl --user --now enable pipewire-pulse
+systemctl --user --now enable wireplumber
+
 
 mpd
 mpc update
