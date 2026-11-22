@@ -99,6 +99,7 @@ sudo systemctl enable --now cups
 sudo systemctl enable sddm
 sudo systemctl enable --now rtirq
 sudo systemctl enable --now sshd
+sudo systemctl enable --now audio-setup
 systemctl enable audio-setup.service
 systemctl --user --now enable mpd
 systemctl --user --now enable pipewire
